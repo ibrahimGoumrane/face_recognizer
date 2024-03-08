@@ -18,9 +18,10 @@ class SGDA:
             cls.__instance = super(SGDA, cls).__new__(cls)
         return cls.__instance  
     def __init__(self) -> None:  
-        self.__Create_Database()
+        #commented  lines are for database initialisation purpose only
+        # self.__Create_Database()
         self.__User_Base_Connection(SGDA.Db_name)
-        self.__Creating_Table(Tables.TABLES)
+        # self.__Creating_Table(Tables.TABLES)
         # self.__Delete_DataBase() experiments
         self.__Close_Connection() 
    
@@ -37,6 +38,7 @@ class SGDA:
                         host='localhost',
                         database=DataBase)
             self.cursor=self.cnx.cursor()
+            self.get_cursor=self.cnx.cursor(dictionary=True)
         except sq.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                     print("wrong User name or password")
@@ -75,8 +77,28 @@ class SGDA:
    
     def __Delete_DataBase(self):
         self.cursor.execute('DROP DATABASE IF EXISTS {};'.format(SGDA.Db_name))
+    
+    
+    #data manipulation queries
+    def set_qwery(self,query:str,data:tuple)->None:
+        self.cursor.execute(query, data)
+        self.cnx.commit()
+        self.__Close_Connection()
+    
+    def set_qwery_many(self,query:str,data:list[tuple])->None:
+        try:
+            # Execute the query for each set of values
+            for person_data in data:
+                self.set_qwery(query,person_data)
+            # Commit the changes
+            print("Records inserted successfully.")
 
-
-
-if __name__=='__main__':
-    system = SGDA()
+        except sq.Error as err:
+            print(f"Error: {err}")
+        self.__Close_Connection()    
+    
+    def get_qwery(self,query:str)->list[dict]:
+        self.get_cursor.execute(query)
+            # Fetch all rows as dictionaries (column names will be keys)
+        return self.get_cursor.fetchall()
+system = SGDA()
