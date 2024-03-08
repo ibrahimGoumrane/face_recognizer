@@ -7,20 +7,7 @@ class Tables:
     TABLES = {}
     table_number=len(TABLES.keys())
     table_names=TABLES.keys()
-    TABLES['students'] = (
-        "CREATE TABLE IF NOT EXISTS `students` ("
-        "  `student_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,"
-        "  `student_name` TEXT NOT NULL"
-        ")"
-    )
-
-    TABLES['teachers'] = (
-        "CREATE TABLE IF NOT EXISTS `teachers` ("
-        "  `teacher_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,"
-        "  `teacher_name` TEXT NOT NULL"
-        ")"
-    )
-
+    
     TABLES['class'] = (
         "CREATE TABLE IF NOT EXISTS `class` ("
         "  `class_id` INT NOT NULL AUTO_INCREMENT,"
@@ -30,7 +17,21 @@ class Tables:
         "  PRIMARY KEY (`class_id`)"
         ")"
     )
-
+    TABLES['teachers'] = (
+        "CREATE TABLE IF NOT EXISTS `teachers` ("
+        "  `teacher_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,"
+        "  `teacher_name` TEXT NOT NULL"
+        ")"
+    )
+    TABLES['students'] = (
+        "CREATE TABLE IF NOT EXISTS `students` ("
+        "  `student_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,"
+        "  `student_name` TEXT NOT NULL,"
+        "  `class_id` INT NOT NULL,"
+        "  CONSTRAINT `students_class_id` FOREIGN KEY (`class_id`) "
+        "     REFERENCES `class` (`class_id`) ON DELETE CASCADE"
+        ")"
+    )
     TABLES['module'] = (
         "CREATE TABLE IF NOT EXISTS `module` ("
         "  `module_id` INT PRIMARY KEY AUTO_INCREMENT,"

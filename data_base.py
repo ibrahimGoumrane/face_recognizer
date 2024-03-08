@@ -1,6 +1,7 @@
 import mysql.connector as sq
 from mysql.connector import errorcode
 from tables import Tables
+
 #SGA system de gestion d'absence
 
 class SGDA:
@@ -11,11 +12,16 @@ class SGDA:
     Db_name='SGDA'
     __user='admin'
     __pasword='admin'
-
+    __instance=None
+    def __new__(cls):
+        if cls.__instance is None:
+            cls.__instance = super(SGDA, cls).__new__(cls)
+        return cls.__instance  
     def __init__(self) -> None:  
         self.__Create_Database()
         self.__User_Base_Connection(SGDA.Db_name)
         self.__Creating_Table(Tables.TABLES)
+        # self.__Delete_DataBase() experiments
         self.__Close_Connection() 
    
     def __User_Base_Connection(self,DataBase='')->None:
@@ -70,8 +76,7 @@ class SGDA:
     def __Delete_DataBase(self):
         self.cursor.execute('DROP DATABASE IF EXISTS {};'.format(SGDA.Db_name))
 
-    
 
-if  __name__=="__main__":
-    system=SGDA()
 
+if __name__=='__main__':
+    system = SGDA()
