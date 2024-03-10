@@ -13,13 +13,13 @@ class Data_Base_extracters :
     def __get_teacher_id(self,student_name)->int:
         pass    
 
-    def get_class_students(self,class_id:int)->np.ndarray:
+    def get_students_class(self,class_id:int)->np.ndarray:
         pass
     def get_class_absence_list(self,class_id:int,date:date)->np.ndarray:
         pass
-    def get_student_absence_hours_in_week(self,student_id:int,week:date)->dict:
+    def get_student_weekly_global_absence_hours(self,student_id:int,week:date)->dict:
         pass
-    def get_student_weekly_module_absence_hours(self,student_id:int,week:date,hours:date)->dict:
+    def get_student_weekly_module_absence_hours(self,student_id:int,week:date,module_id:int)->dict:
         pass
     def get_student_Absence_status_based_module(self,student_id:int,module_id:int)->dict:    
         pass
