@@ -34,7 +34,7 @@ class Tables:
     )
     TABLES['module'] = (
         "CREATE TABLE IF NOT EXISTS `module` ("
-        "  `module_id` INT PRIMARY KEY AUTO_INCREMENT,"
+        "  `module_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
         "  `class_id` INT NOT NULL,"
         "  `teacher_id` INT NOT NULL,"
         "  `module_name` TEXT NOT NULL,"
@@ -47,7 +47,7 @@ class Tables:
     
     TABLES['seance'] = (
         "CREATE TABLE IF NOT EXISTS `seance` ("
-        "  `seance_id` INT NOT NULL PRIMARY KEY,"
+        "  `seance_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,"
         "  `class_id` INT NOT NULL,"
         "  `module_id` INT NOT NULL,"
         "  `start_hour` INT NOT NULL,"
@@ -66,7 +66,7 @@ class Tables:
         "  `presence_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,"
         "  `seance_id` INT NOT NULL,"
         "  `student_id` INT NOT NULL,"
-        "  `status` BOOLEAN,"
+        "  `state` BOOLEAN  NOT NULL DEFAULT FALSE,"
         "  CONSTRAINT `presence_seance_id` FOREIGN KEY (`seance_id`) "
         "     REFERENCES `seance` (`seance_id`) ON DELETE CASCADE,"
         "  CONSTRAINT `presence_student_id` FOREIGN KEY (`student_id`) "
