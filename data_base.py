@@ -1,7 +1,7 @@
 import mysql.connector as sq
 from mysql.connector import errorcode
 from tables import Tables
-
+import numpy as np
 #SGA system de gestion d'absence
 
 class SGDA:
@@ -22,11 +22,11 @@ class SGDA:
     
     def __init__(self) -> None:  
         #commented  lines are for database initialisation purpose only
-        #self.__Create_Database()
-        self.__User_Base_Connection(SGDA.Db_name)
-        #self.__Creating_Table(Tables.TABLES)
-        #self.__Delete_DataBase() #experiments
-        #self.__Close_Connection() 
+        self.__Create_Database()
+        # self.__User_Base_Connection(SGDA.Db_name)
+        # self.__Creating_Table(Tables.TABLES)
+        # self.__Delete_DataBase() #experiments
+        self.__Close_Connection() 
         
     def __User_Base_Connection(self,DataBase='')->None:
         try :
@@ -102,13 +102,19 @@ class SGDA:
             print(f"Error: {err}")
         self.__Close_Connection()    
     
-    def get_qwery(self,query:str)->list[dict]:
+    def get_qwery(self,query:str,data:tuple)->list[dict]:
         self.__User_Base_Connection(DataBase=SGDA.Db_name)
-        self.get_cursor.execute(query)
+        self.get_cursor.execute(query,data)
             # Fetch all rows as dictionaries (column names will be keys)
-        values:list[dict]=self.get_cursor.fetchall()
+        values:list[dict]=np.array(self.get_cursor.fetchall())
         self.__Close_Connection()
         return values
-
+    def get_qwery_many(self,query:str,data:tuple)->list[dict]:
+        self.__User_Base_Connection(DataBase=SGDA.Db_name)
+        self.get_cursor.executemany(query,data)
+            # Fetch all rows as dictionaries (column names will be keys)
+        values:list[dict]=np.array(self.get_cursor.fetchall())
+        self.__Close_Connection()
+        return values
 
 system = SGDA()

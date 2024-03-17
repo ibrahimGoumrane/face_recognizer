@@ -3,6 +3,9 @@ from mysql.connector import Error
 from datetime import datetime, timedelta,date
 import math
 from data_base import system
+from utils import utils
+
+
 
 class DataBaseSetters:
     def __init__(self) -> None:
@@ -29,20 +32,9 @@ class DataBaseSetters:
         except Error as e:
             print(f"An error occurred during class initialization: {e}")
 
-    def set_current_time(self)->dict:
-        Date_Info = datetime.now()
-        date_v2 =  Date_Info.strftime("%Y-%m-%d")
-        current_day = Date_Info.weekday()
-        day_name = (datetime(1900, 1, 1) + timedelta(days=current_day)).strftime('%A')
-        current_hour = math.floor(Date_Info.hour)
-        return {
-            'start_hour': current_hour,
-            'end_hour': current_hour + 2,
-            'week_day': day_name,
-            'full_date': date_v2,
-        }
-    def set_seance_data(self, class_id: int, module_id: int) -> None:
-        Date_info=self.set_current_time()
+
+    def set_seance_data(self, class_id: int, module_id: int,date:datetime=datetime.now()) -> None:
+        Date_info=utils.set_current_time(date)
 
         qwery = "INSERT INTO seance (class_id, module_id, start_hour, end_hour, week_day, full_date) VALUES (%s, %s, %s, %s, %s, %s)"
         try:
